@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.hello{
+    background-color: #241c1ca4;
+}
