@@ -47,7 +47,7 @@ const RegistrationForm: React.FC = () => {
       router.push('/auth/login')
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // This ensures TypeScript knows it's an Axios error
+        // This ensures TypeScript knows it's an Axios erroree
         alert(error.response?.data?.message || 'An error occurred');
         console.log(error.response?.data?.message);
     }
