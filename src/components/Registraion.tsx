@@ -3,8 +3,8 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-
+import { registerApi } from '@/service/auth';
+import Button from './button';
 
 // Define the interface
 interface RegistrationFormValues {
@@ -30,6 +30,7 @@ const validationSchema = Yup.object({
 
 const RegistrationForm: React.FC = () => {
   const router = useRouter();
+
   const initialValues: RegistrationFormValues = {
     userName: '',
     email: '',
@@ -39,22 +40,25 @@ const RegistrationForm: React.FC = () => {
     month: '',
     year: '',
   };
-//
-  const handleSubmit = async(values: RegistrationFormValues) =>{
+
+  const handleSubmit = async (values: RegistrationFormValues) => {
     try {
-      const response = await axios.post('http://localhost:5005/api/user/register')
-      console.log(response.data)
-      router.push('/auth/login')
+      // Call the register API
+      const response = await registerApi(values);
+      
+      // After successful registration, redirect to otp verification page
+      if (response?.success) {
+        router.push(`/auth/otp?email=${encodeURIComponent(values.email)}`);
+      } else {
+        // Handle API failure or errors
+        alert(response?.message)
+      }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // This ensures TypeScript knows it's an Axios erroree
-        alert(error.response?.data?.message || 'An error occurred');
-        console.log(error.response?.data?.message);
+      alert()
     }
-    router.push('/auth/login')
   };
 
-  // Generate dropdown optionsssssjbkjbn
+  // Generate dropdown options
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -187,12 +191,10 @@ const RegistrationForm: React.FC = () => {
               </div>
 
               {/* Submit Button */}
-              <button
+              <Button
                 type="submit"
-                className="w-full p-2 bg-[#6a3aba] text-white rounded-md"
-              >
-                Register
-              </button>
+                text='Get OTP'
+              />
               <p className="text-center text-sm text-gray-400 mt-4">
                 Already have an account?{' '}
                 <a

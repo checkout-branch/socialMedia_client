@@ -2,6 +2,9 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
+import Button from './button';
+import { loginApi } from '@/service/auth';
+import { toast } from 'react-toastify';
 
 interface LoginFormValues {
   email: string;
@@ -24,7 +27,20 @@ const LoginForm: React.FC = () => {
     password: '',
   };
 
-  const handleSubmit = (values: LoginFormValues) => {
+  const handleSubmit = async (values: LoginFormValues) => {
+    try {
+      const response = await loginApi(values)
+      if(response?.success){
+        
+        router.push('/')
+        toast.success('login successfull')
+      }
+      else{
+        toast.warn(response?.message)
+      }
+    } catch (error) {
+      toast.error('error')
+    }
     console.log(values);
   };
 
@@ -75,12 +91,10 @@ const LoginForm: React.FC = () => {
               </div>
 
               {/* Submit Button */}
-              <button
+              <Button
                 type="submit"
-                className="w-full p-2 bg-[#6a3aba] text-white rounded-md"
-              >
-                Login
-              </button>
+                text="Login"
+              />
 
               {/* Google Login Button */}
               <div className="mt-4">
