@@ -1,19 +1,24 @@
 import axios from 'axios';
+import Cookies from 'js-cookie'; // Import js-cookie to handle cookies
 
 const api = axios.create({
     baseURL: "http://localhost:5005/api",
     headers: {
         'Content-Type': 'application/json', 
-      },
+    },
 });
 
+// Request Interceptor to attach token from cookies to requests
 api.interceptors.request.use(
     (config) => {
-        // const token = selectToken(store.getState());
-        const token = localStorage.getItem("token")
+        // Get the token from the cookies
+        const token = Cookies.get("Access_token");  // Read token from cookies
+
         if (token) {
-            config.headers['Authorization'] =` Bearer ${token}`;
+            // Attach the token to the Authorization header
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
+
         return config;
     },
     (error) => {
@@ -21,6 +26,7 @@ api.interceptors.request.use(
     }
 );
 
+// Response Interceptor for handling errors
 api.interceptors.response.use(
     (response) => {
         return response;
@@ -34,8 +40,8 @@ api.interceptors.response.use(
                     break;
                 case 401:
                     console.error('Unauthorized: Please log in to continue.');
-               
-                    window.location.replace('auth/login');
+                    // Redirect to login page or show login modal
+                    // window.location.replace('auth/login');
                     break;
                 case 500:
                     console.error('Internal Server Error');

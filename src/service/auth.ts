@@ -1,30 +1,70 @@
 import api from './api';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie'; // Import js-cookie
 
 export const registerApi = async (values: any) => {
   try {
-       const res = await api.post('/user/register', values);
-       return res.data;
+    const res = await api.post('/user/register', values);
+    return res.data;
   } catch (err) {
-       throw new Error('Registration failed');
+    if (err instanceof AxiosError) {
+      // Return the error message or any other relevant error information
+      return {
+        message: err.response?.data?.message || 'Something went wrong during registration',
+      };
+    } else {
+      // Handle non-Axios errors
+      return {
+        success: false,
+        message: 'An unknown error occurred',
+      };
+    }
   }
 };
+
 
 export const OtpVerifyApi = async(values: any) => {
     try {
         const res = await api.post('/user/otpverification',values)        
         return res.data
         
-    } catch (error) {
-        throw new Error('Registration failed');
-    }
+    } catch (err) {
+        if (err instanceof AxiosError) {
+          // Return the error message or any other relevant error information
+          return {
+            message: err.response?.data?.message || 'Something went wrong during registration',
+          };
+        } else {
+          // Handle non-Axios errors
+          return {
+            success: false,
+            message: 'An unknown error occurred',
+          };
+        }
+      }
 }
 
 export const loginApi = async (values: any) => {
     try {
-        const res = await api.post('/user/login',values)
+        const res = await api.post('/user/login',values,)
+        
+        if (res.data.token) {
+            Cookies.set('Access_token', res.data.token, { expires: 1, path: '' }); // Expires in 1 day
+        }
         return res.data
         
-    } catch (error) {
-        throw new Error ('Login faild')
-    }
+    }  catch (err) {
+        if (err instanceof AxiosError) {
+          // Return the error message or any other relevant error information
+          return {
+            message: err.response?.data?.message || 'Something went wrong during registration',
+          };
+        } else {
+          // Handle non-Axios errors
+          return {
+            success: false,
+            message: 'An unknown error occurred',
+          };
+        }
+      }
 }

@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { registerApi } from '@/service/auth';
 import Button from './button';
+import { toast } from 'react-toastify';
 
 // Define the interface
 interface RegistrationFormValues {
@@ -49,12 +50,14 @@ const RegistrationForm: React.FC = () => {
       // After successful registration, redirect to otp verification page
       if (response?.success) {
         router.push(`/auth/otp?email=${encodeURIComponent(values.email)}`);
+        toast.success(response?.message)
       } else {
         // Handle API failure or errors
-        alert(response?.message)
+        toast.warn(response?.message)
+
       }
     } catch (error) {
-      alert()
+      toast.error('Something went wrong')
     }
   };
 

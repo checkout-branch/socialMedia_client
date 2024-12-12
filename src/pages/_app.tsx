@@ -6,15 +6,21 @@ import Navbar from "@components/Navbar";
 import "../styles/global.css"; 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
 
-const MyApp = ({ Component, pageProps }: any) => {
+const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) => {
   const router = useRouter();
+  
 
   // Define the list of routes that should exclude the Sidebar and Navbar
   const authPages = ["/auth/registration", "/auth/login", "/auth/otp"];
   const isAuthPage = authPages.includes(router.pathname);
 
   return (
+    <SessionProvider session={session}>
+      
     <>
       {/* Global Head metadata */}
       <Head>
@@ -44,6 +50,7 @@ const MyApp = ({ Component, pageProps }: any) => {
         </div>
       </div>
     </>
+    </SessionProvider>
   );
 };
 

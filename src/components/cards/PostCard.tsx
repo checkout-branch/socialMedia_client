@@ -1,10 +1,11 @@
 import React from "react";
 import { FcLike } from "react-icons/fc";
-import { FaComment } from "react-icons/fa";
+import { FaComment, FaUserCircle } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import { AiOutlineSave } from "react-icons/ai";
 
 interface PostCardProps {
+  profileImage: string,
   author: string;
   description: string;
   imageUrl: string;
@@ -14,6 +15,7 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({
+  
   author,
   description,
   imageUrl,
@@ -24,10 +26,14 @@ const PostCard: React.FC<PostCardProps> = ({
   return (
     <div className="max-w-lg ml-40 text-white rounded-lg shadow-lg overflow-hidden mb-6">
       {/* Header Section */}
-      <div className="flex gap-4 mb-2 items-center">
+      <div className="flex items-center justify-between">
         
-          <p className="text-sm text-gray-400 ">{author}</p>
-          <p className="text-xs text-gray-500 ">{timestamp}</p>
+          <div className="flex mb-2 items-center gap-1">
+          <FaUserCircle className="text-2xl"/>
+          <p className="text-sm text-gray-400 ">{author} •</p>
+          <p className="text-sm text-gray-500 ">{timestamp}</p>
+          </div>
+          <div>•••</div>
       </div>
 
       {/* Image Section */}
@@ -38,12 +44,12 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* Action Icons Section */}
       <div className="flex justify-between items-center p-4">
-        <div className="flex gap-6">
+        <div className="flex gap-3">
           <FcLike className="text-2xl cursor-pointer hover:text-red-500" />
           <FaComment className="text-2xl cursor-pointer hover:text-white" />
           <FiSend className="text-2xl cursor-pointer hover:text-white" />
         </div>
-        <AiOutlineSave className="text-gray-400 text-xl cursor-pointer hover:text-white" />
+        <AiOutlineSave className=" text-2xl cursor-pointer hover:text-white" />
       </div>
 
       {/* Like & Comment Details */}

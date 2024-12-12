@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
           <FiSearch className="text-xl mr-1 text-[#8F8F8F]" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search"
             className="bg-transparent text-white outline-none flex-grow"
           />
         </div>

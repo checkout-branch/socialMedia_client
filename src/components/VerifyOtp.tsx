@@ -7,6 +7,7 @@ import Button from './button'; // Assuming Button component is in the same folde
 import { useRouter, useSearchParams } from 'next/navigation';
 import { OtpVerifyApi } from '@/service/auth';
 import { number } from 'yup';
+import { toast } from 'react-toastify';
 
 export default function VerifyOTP() {
   const [otp, setOtp] = useState('');
@@ -28,10 +29,10 @@ export default function VerifyOTP() {
   
       if (response.success && otp.length === 4) {
         // Simulate OTP verification
-        alert(response?.message);
+        toast.success(response?.message);
         router.push('/auth/login'); // Redirect to the login page
       } else {
-        alert(response?.message);
+        toast.warn(response?.message);
       }
     } catch (error) {
       console.log('Error during OTP verification:', error);

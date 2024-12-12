@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import Button from './button';
 import { loginApi } from '@/service/auth';
 import { toast } from 'react-toastify';
+import GoogleAuth from './googleAuth';
 
 interface LoginFormValues {
   email: string;
@@ -27,19 +28,23 @@ const LoginForm: React.FC = () => {
     password: '',
   };
 
+  // console.log('Current path:', window.location.pathname); // This will log the current path
+
+
   const handleSubmit = async (values: LoginFormValues) => {
     try {
       const response = await loginApi(values)
       if(response?.success){
         
         router.push('/')
-        toast.success('login successfull')
+        toast.success(response?.message)
       }
       else{
         toast.warn(response?.message)
       }
     } catch (error) {
       toast.error('error')
+      console.log(error)
     }
     console.log(values);
   };
@@ -98,18 +103,19 @@ const LoginForm: React.FC = () => {
 
               {/* Google Login Button */}
               <div className="mt-4">
-                <button
+                {/* <button
                   className="w-full flex items-center justify-center p-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 transition-all"
-                >
-                  <img
+                > */}
+                  <GoogleAuth/>
+                  {/* <img
                     src="/images/googleLogo.png"
                     alt="Google Logo"
                     className="w-8 h-5 mr-2"
-                  />
+                  /> */}
                   <span className="text-sm font-medium text-gray-600">
-                    Login with Google
+                    {/* Login with Google */}
                   </span>
-                </button>
+                {/* </button> */}
               </div>
 
               {/* Optional Link */}
