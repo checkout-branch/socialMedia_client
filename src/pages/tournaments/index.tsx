@@ -1,76 +1,34 @@
-import TournamentCard from "@components/cards/TournamentCard";
+import React, { useEffect, useState } from "react";
+import { getTournamentApi } from "@/service/tournament";
+import TournamentCard from "@components/Cards/TournamentCard";
 
-const tournaments = [
-    {
-      id: 1,
-      gameImage: "/path/to/game-image1.jpg",
-      userImage: "/path/to/user-image1.jpg",
-      userName: "PlayerOne",
-      gameName: "Battle Royale",
-      description: "Fast-paced action game.",
-      totalSlots: 20,
-      entryFee: 50,
-    },
-    {
-      id: 2,
-      gameImage: "/path/to/game-image2.jpg",
-      userImage: "/path/to/user-image2.jpg",
-      userName: "PlayerTwo",
-      gameName: "Racing Thunder",
-      description: "Competitive car racing.",
-      totalSlots: 15,
-      entryFee: 30,
-    },
-    {
-        id: 1,
-        gameImage: "/path/to/game-image1.jpg",
-        userImage: "/path/to/user-image1.jpg",
-        userName: "PlayerOne",
-        gameName: "Battle Royale",
-        description: "Fast-paced action game.",
-        totalSlots: 20,
-        entryFee: 50,
-      },
-      {
-        id: 2,
-        gameImage: "/path/to/game-image2.jpg",
-        userImage: "/path/to/user-image2.jpg",
-        userName: "PlayerTwo",
-        gameName: "Racing Thunder",
-        description: "Competitive car racing.",
-        totalSlots: 15,
-        entryFee: 30,
-      },
-      {
-        id: 1,
-        gameImage: "/path/to/game-image1.jpg",
-        userImage: "/path/to/user-image1.jpg",
-        userName: "PlayerOne",
-        gameName: "Battle Royale",
-        description: "Fast-paced action game.",
-        totalSlots: 20,
-        entryFee: 50,
-      },
-      {
-        id: 2,
-        gameImage: "/path/to/game-image2.jpg",
-        userImage: "/path/to/user-image2.jpg",
-        userName: "PlayerTwo",
-        gameName: "Racing Thunder",
-        description: "Competitive car racing.",
-        totalSlots: 15,
-        entryFee: 30,
-      },
-  ];
-  
+const Tournaments: React.FC = () => {
+  const [tournaments, setTournaments] = useState([]);
 
-export default function Tournaments () {
-    return (
-        <div className="grid grid-cols-4">
-            {tournaments.map((ele,ind)=>(
-                <TournamentCard key={ind} {...ele}/>
-            ))}
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      try {
+        const res = await getTournamentApi();
+        setTournaments(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.error("Failed to fetch tournaments:", error);
+      }
+    };
 
-        </div>
-    )
-}
+    fetchTournaments();
+  }, []);
+
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Tournaments</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {tournaments.map((tournament, index) => (
+          <TournamentCard key={index} tournament={tournament} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Tournaments;

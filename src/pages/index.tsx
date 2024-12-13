@@ -1,5 +1,5 @@
-import PostCard from "@components/cards/PostCard";
-import UserSuggession from "@components/cards/SuggessionCard";
+import PostCard from "@components/Cards/PostCard";
+import UserSuggession from "@components/Cards/SuggessionCard";
 
 
 const posts = [

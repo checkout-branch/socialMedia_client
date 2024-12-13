@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
        
 
         {/* Search Bar */}
-        <div className="flex items-center bg-[#272932] rounded-lg px-6 py-1 h-14 w-1/3 ml-44">
+        <div className="flex items-center bg-[#272932] rounded-lg px-6 py-1 h-12 w-1/3 ml-44">
           <FiSearch className="text-xl mr-1 text-[#8F8F8F]" />
           <input
             type="text"
