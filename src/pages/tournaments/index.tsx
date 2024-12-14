@@ -20,8 +20,8 @@ const Tournaments: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Tournaments</h1>
+    <div className="p-8 pr-28">
+      <h1 className="text-2xl font-bold mb-6">Tournaments</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {tournaments.map((tournament, index) => (
           <TournamentCard key={index} tournament={tournament} />

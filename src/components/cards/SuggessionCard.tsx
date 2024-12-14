@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import Button from "../button";
+import Button from "../Button/Button";
 
 interface User {
   id: number;

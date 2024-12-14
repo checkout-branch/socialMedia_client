@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { FcLike } from "react-icons/fc";
 import { FaComment, FaUserCircle } from "react-icons/fa";
@@ -38,6 +39,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* Image Section */}
       <img
+      alt=""
         src={imageUrl}
         className="w-full h-96 object-cover rounded-t-lg" // Ensures the image respects rounded corners
       />

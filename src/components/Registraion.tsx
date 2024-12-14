@@ -1,10 +1,11 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { registerApi } from '@/service/auth';
-import Button from './button';
+import Button from './Button/Button';
 import { toast } from 'react-toastify';
 
 // Define the interface
@@ -58,6 +59,7 @@ const RegistrationForm: React.FC = () => {
       }
     } catch (error) {
       toast.error('Something went wrong')
+      console.log(error)
     }
   };
 

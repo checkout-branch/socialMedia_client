@@ -1,14 +1,14 @@
 // src/pages/_app.tsx
 import { useRouter } from "next/router";
 import Head from "next/head"; // Import Head for global metadata
-import Sidebar from "@components/Sidebar";
-import Navbar from "@components/Navbar";
+
 import "../styles/global.css"; 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
+import Navbar from "@components/Navbar/Navbar";
+import Sidebar from "@components/Sidebar";
 
 const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) => {
   const router = useRouter();

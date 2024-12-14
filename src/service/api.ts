@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Import js-cookie to handle cookies
+
 
 const api = axios.create({
     baseURL: "http://localhost:5005/api",
@@ -12,7 +12,7 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         // Get the token from the cookies
-        const token = Cookies.get("Access_token");  // Read token from cookies
+        const token = sessionStorage.getItem("Access_token");  // Read token from cookies
 
         if (token) {
             // Attach the token to the Authorization header

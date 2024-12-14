@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
-import Button from "@components/button";
+import Link from "next/link";
 
 type Tournament = {
-  id: number;
+  _id: string;
   gameImage: string;
   userImage: string;
   userName: string;
@@ -17,8 +18,10 @@ type TournamentCardProps = {
 };
 
 const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
-
+  console.log(tournament._id)
   return (
+    <Link href={`/tournaments/${tournament._id}`}>
+
     <div className="max-w-xs bg-[#272932] text-white rounded-lg shadow-lg hover:shadow-xl transition duration-300">
       {/* Game Image */}
       <img
@@ -66,11 +69,14 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
         </div>
       </div>
 
+ 
+
       {/* Join Button */}
       {/* <div className="p-4 border-t border-gray-700">
         <Button text="Join Now" />
-      </div> */}
+        </div> */}
     </div>
+        </Link>
   );
 };
 

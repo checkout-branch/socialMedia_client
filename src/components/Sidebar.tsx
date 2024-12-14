@@ -12,8 +12,16 @@ import Link from "next/link"; // Import Link from next
 const Sidebar: React.FC = () => {
   const router = useRouter(); // Get the current route
 
-  // Function to determine if the link is active
-  const isActive = (path: string) => router.pathname === path;
+  const isActive = (path: string) => {
+
+    if (path === "/tournaments") {
+      return router.pathname.startsWith("/tournaments");
+    }
+    if (path === '/createtournament') {
+      return router.pathname.startsWith('/createtournament')
+    }
+    return router.pathname === path;
+  };
 
   return (
     <div className="w-28 bg-[#272932] text-white min-h-screen p-4 flex flex-col items-center fixed z-10">

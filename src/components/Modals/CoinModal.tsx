@@ -1,4 +1,5 @@
-import Button from '@components/button';
+/* eslint-disable @next/next/no-img-element */
+import Button from '@components/Button/Button';
 import React from 'react';
 
 interface CoinModalProps {

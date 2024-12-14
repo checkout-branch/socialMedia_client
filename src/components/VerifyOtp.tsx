@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
 
-import Button from './button'; // Assuming Button component is in the same folder
+import Button from './Button/Button'; // Assuming Button component is in the same folder
 import { useRouter, useSearchParams } from 'next/navigation';
 import { OtpVerifyApi } from '@/service/auth';
-import { number } from 'yup';
 import { toast } from 'react-toastify';
 
 export default function VerifyOTP() {
@@ -72,7 +71,7 @@ export default function VerifyOTP() {
         </div>
 
         <p className="text-center text-sm text-gray-400 mt-4">
-          Didn't receive the OTP?{' '}
+          Didn&apos;t receive the OTP?{' '}
           <button className="text-blue-500 hover:underline">Resend OTP</button>
         </p>
       </div>

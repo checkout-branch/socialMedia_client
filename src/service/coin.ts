@@ -26,7 +26,8 @@ export const getCoinByIdApi = async (id:string)=>{
       const res =await api.get(`/user/purchasecoin/${id}`)
       return res.data
     } catch (error) {
-      throw new Error('erro from fetch coin by id')
+
+      throw  error
     }
 }
 

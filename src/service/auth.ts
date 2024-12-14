@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from './api';
 import { AxiosError } from 'axios';
-import Cookies from 'js-cookie'; // Import js-cookie
 
 export const registerApi = async (values: any) => {
   try {
@@ -49,7 +49,7 @@ export const loginApi = async (values: any) => {
         const res = await api.post('/user/login',values,)
         
         if (res.data.token) {
-            Cookies.set('Access_token', res.data.token, { expires: 1, path: '' }); // Expires in 1 day
+            sessionStorage.setItem('Access_token', res.data.token); // Expires in 1 day
         }
         return res.data
         
