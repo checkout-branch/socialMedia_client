@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
 
-import Button from './Button/Button'; // Assuming Button component is in the same folder
+import Button from './button/Button'; // Assuming Button component is in the same folder
 import { useRouter, useSearchParams } from 'next/navigation';
 import { OtpVerifyApi } from '@/service/auth';
 import { toast } from 'react-toastify';

@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import Button from "../Button/Button";
+import Button from "../button/Button";
 
 interface User {
   id: number;
@@ -26,9 +27,10 @@ const UserSuggession: React.FC = () => {
       {/* Users List */}
       <div className="flex flex-col gap-4">
         {users.splice(0,5).map((user) => (
-         <div className="flex justify-between">
+         <div
+         key={user.id}
+          className="flex justify-between">
              <div
-            key={user.id}
             className=" rounded-lg flex items-center gap-3"
           >
             <div className="w-8 h-8 rounded-full overflow-hidden">

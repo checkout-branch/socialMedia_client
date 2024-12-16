@@ -1,5 +1,5 @@
 import AuthLayout from "@/layout/AuthLayout";
-import RegistrationForm from "@components/Registraion";
+import RegistrationForm from "@components/forms/RegistraionForm";
 
 
 const RegistrationPage : React.FC = ()=> {

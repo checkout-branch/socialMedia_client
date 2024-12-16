@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
-import Navbar from "@components/Navbar/Navbar";
+import Navbar from "@components/Navbar";
 import Sidebar from "@components/Sidebar";
 
 const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) => {

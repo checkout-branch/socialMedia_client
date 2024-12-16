@@ -5,8 +5,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { registerApi } from '@/service/auth';
-import Button from './Button/Button';
 import { toast } from 'react-toastify';
+import Button from '@components/button/Button';
 
 // Define the interface
 interface RegistrationFormValues {

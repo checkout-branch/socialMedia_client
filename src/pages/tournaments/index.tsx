@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTournamentApi } from "@/service/tournament";
-import TournamentCard from "@components/Cards/TournamentCard";
+import TournamentCard from "@components/cards/TournamentCard";
 
 const Tournaments: React.FC = () => {
   const [tournaments, setTournaments] = useState([]);

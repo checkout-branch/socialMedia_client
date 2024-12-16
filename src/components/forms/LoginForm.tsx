@@ -3,10 +3,10 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
-import Button from './Button/Button';
 import { loginApi } from '@/service/auth';
 import { toast } from 'react-toastify';
-import GoogleAuth from './googleAuth';
+import Button from '@components/button/Button';
+import GoogleAuth from '@components/googleAuth';
 
 interface LoginFormValues {
   email: string;

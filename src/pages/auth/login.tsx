@@ -1,7 +1,7 @@
 // src/pages/auth/login.tsx
 
 import AuthLayout from '@/layout/AuthLayout';
-import LoginForm from '@components/LoginForm';
+import LoginForm from '@components/forms/LoginForm';
 
 const LoginPage: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 import { getCoinApi, getCoinByIdApi } from '@/service/coin';
-import CoinCard from '@components/Cards/CoinCard';
-import CoinModal from '@components/Modals/CoinModal';
+import CoinCard from '@components/cards/CoinCard';
+import CoinModal from '@components/modals/CoinModal';
 import React, { useState, useEffect } from 'react';
 
 const CoinListPage: React.FC = () => {
