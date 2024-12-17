@@ -1,40 +1,34 @@
-// import { useFormik } from "formik";
-// import { tournamentSchema, TournamentSchemaType } from "@/utils/formSchema";
+// src/components/Tournament/TournamentValidation.ts
 
-// interface TournamentFormValues {
-//     tournamentName: string;
-//     game: string;
-//     date: Date;
-//     entreeFee: number;
-//     prizePool: number;
-//     format: string;
-//     slots: number;
-//     description: string;
-//     image: File | null; // Ensures the image field is properly typed
-//   }
-  
+export interface TournamentFormValues {
+    tournamentName: string;
+    game: string;
+    startDate: string;
+    endDate: string;
+    entryFee: string;
+    prizePoolFirst: string;
+    prizePoolSecond: string;
+    prizePoolThird: string;
+    format: string;
+    slots: string;
+    description: string;
+    image: File | null;
+  }
 
-// const useTournamentForm = () => {
-//   const formik = useFormik<TournamentFormValues>({
-//     initialValues: {
-//       tournamentName: "",
-//       game: "",
-//       date: new Date(),
-//       entreeFee: 0,
-//       prizePool: 0,
-//       format: "",
-//       slots: 0,
-//       description: "",
-//       image:null as File | null
-//     },
-//     validationSchema: tournamentSchema,
-//     onSubmit: (values: TournamentSchemaType) => {
-//         console.log("Tournament Created:", values);
-//         // Handle API call or further processing here
-//       },
-//   });
+export const validateTournamentForm = (formValues: TournamentFormValues) => {
+  const errors: { [key: string]: string } = {};
 
-//   return formik;
-// };
+  if (!formValues.tournamentName) errors.tournamentName = "Tournament name is required";
+  if (!formValues.game) errors.game = "Game is required";
+  if (!formValues.startDate) errors.startDate = "Start date is required";
+  if (!formValues.endDate) errors.endDate = "End date is required";
+  if (!formValues.entryFee) errors.entryFee = "Entry fee is required";
+  if (!formValues.prizePoolFirst) errors.prizePoolFirst = "First prize pool is required";
+  if (!formValues.prizePoolSecond) errors.prizePoolSecond = "Second prize pool is required";
+  if (!formValues.prizePoolThird) errors.prizePoolThird = "Third prize pool is required";
+  if (!formValues.slots) errors.slots = "Slots are required";
+  if (!formValues.description) errors.description = "Description is required";
+  if (!formValues.image) errors.image = "Tournament image is required";
 
-// export default useTournamentForm;
+  return errors;
+};

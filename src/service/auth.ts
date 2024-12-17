@@ -46,10 +46,13 @@ export const OtpVerifyApi = async(values: any) => {
 
 export const loginApi = async (values: any) => {
     try {
-        const res = await api.post('/user/login',values,)
+        const res = await api.post('/user/login',values)
         
         if (res.data.token) {
-            sessionStorage.setItem('Access_token', res.data.token); // Expires in 1 day
+            sessionStorage.setItem('Access_token', res.data.token ,); // Expires in 1 day
+        }
+        if(res.data.user){
+          sessionStorage.setItem('user',JSON.stringify(res.data.user))
         }
         return res.data
         

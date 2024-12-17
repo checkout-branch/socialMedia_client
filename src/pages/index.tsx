@@ -1,51 +1,53 @@
+'use client'
+import { getPostApi } from "@/service/post";
 import PostCard from "@components/cards/PostCard";
 import UserSuggession from "@components/cards/SuggessionCard";
+import { useEffect, useState } from "react";
 
-
-const posts = [
-    {
-      author: "John Doe",
-      profileImage:'',
-      description:
-        "Gaming has become a significant part of modern culture, bringing people together from across the globe...",
-      imageUrl:
-        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
-      likes: 120,
-      comments: 45,
-      timestamp: "2h",
-    },
-    {
-      author: "Jane Smith",
-      profileImage:'',
-      description:
-        "Learn the top strategies to dominate in your next gaming tournament. From preparation to execution...",
-      imageUrl:
-        "https://2.bp.blogspot.com/-DXC1pew5cEw/XH6E1Qqyy9I/AAAAAAAAAXw/gZoDztBlqrEaMccig1tTgoi5QTwybtZIgCKgBGAs/w0/pubg-playerunknowns-battlegrounds-uhdpaper.com-8K-1.jpg",
-      likes: 87,
-      comments: 22,
-      timestamp: "1d",
-    },
-  ];
-
-  
-  
-
-export default function Home () {
-    return (
-        <div className="flex gap-6 p-4">
-        {/* Posts Section */}
-        <div className="grid grid-cols-1 gap-6 w-3/4">
-          {posts.map((post, index) => (
-            <PostCard key={index} {...post} />
-          ))}
-        </div>
-  
-        {/* Suggested Users Section */}
-        <div className="w-1/4 mr-20 mt-2">
-          < UserSuggession/>
-        </div>
-      </div>
-  
-    )
+// Define the Post interface
+interface Post {
+  profileImage: string;
+  userName: string;
+  description: string;
+  image: string;
+  likes: number[];
+  comments: number;
+  createdAt: string;
 }
 
+export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]); // Define state as an array of Post objects
+
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      try {
+        const res = await getPostApi();
+        const sortedPosts = res?.data.sort((a: Post, b: Post) => {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
+        setPosts(sortedPosts);
+        console.log(sortedPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchTournaments();
+  }, []);
+
+  return (
+    <div className="flex gap-6 p-4">
+      {/* Posts Section */}
+      <div className="grid grid-cols-1 gap-6 w-3/4">
+        {posts.map((post, index) => (
+          <PostCard key={index} post={post} />
+        ))}
+      </div>
+
+      {/* Suggested Users Section */}
+      <div className="w-1/4 mr-20 mt-2">
+        <UserSuggession />
+      </div>
+    </div>
+  );
+}

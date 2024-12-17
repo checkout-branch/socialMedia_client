@@ -59,7 +59,7 @@ const CoinListPage: React.FC = () => {
       <div className=' ml-5 mt-2'>
         <h1 className='text-2xl font-bold'>Purchase coins</h1>
         <div className="p-10 pr-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mr-32 bg-[#272932] rounded-lg ">
-      {coins.map((coin,ind) => (
+      {coins?.map((coin,ind) => (
         <CoinCard key={ind} coin={coin} onOpenModal={openModal} />
       ))}
 
