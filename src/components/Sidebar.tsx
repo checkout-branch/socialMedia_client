@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-28 bg-[#272932] text-white min-h-screen p-4 flex flex-col items-center fixed z-10">
+    <div className="w-28 bg-[#272932] text-white min-h-screen p-4 flex flex-col items-center fixed z-20">
       <h2 className="text-xl font-bold mb-8">LOGO</h2>
       <ul className="flex flex-col items-center gap-9 w-full mt-10">
         {/* Top Section */}

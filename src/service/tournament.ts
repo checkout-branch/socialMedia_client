@@ -34,9 +34,13 @@ export const getTournamentByIdApi = async (id: string) => {
   }
 };
 
-export const createTournament = async (formData: FormData, id: string)=>{
+export const createTournamentApi = async (formData: FormData, id: string)=>{
   try {
-    const res = await api.post(`/user/createtournament/${id}`, formData,);
+    const res = await api.post(`/user/createtournament/${id}`, formData,{
+      headers:{
+          "Content-Type":"multipart/form-data"
+        }
+  })
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {

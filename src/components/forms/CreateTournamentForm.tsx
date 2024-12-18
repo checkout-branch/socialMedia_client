@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import Image from "next/image";
 import Button from "@components/button/Button";
 import {
   TournamentFormValues,
   validateTournamentForm,
 } from "@/Hooks/useTournamentForm";
+// import { createTournamentApi } from "@/service/tournament";
 
-const TournamentCreationForm: React.FC = () => {
+const TournamentCreationForm: React.FC<{ onSubmit: (data: TournamentFormValues) => void }> = ({ onSubmit }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<TournamentFormValues>({
     tournamentName: "",
@@ -27,17 +28,17 @@ const TournamentCreationForm: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const router = useRouter();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = validateTournamentForm(formValues);
     setErrors(newErrors);
-
+  
     if (Object.keys(newErrors).length === 0) {
-      console.log(formValues, "Tournament Submitted");
-      router.push("/about");
+      
+      onSubmit(formValues);  
     }
   };
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

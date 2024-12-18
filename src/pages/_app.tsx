@@ -41,7 +41,7 @@ const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) =>
           {!isAuthPage && <Navbar />}
 
           {/* Page-specific content */}
-          <main className={` ${!isAuthPage ? "ml-48 mt-20" : "mt-0"}`}>
+          <main className={` ${!isAuthPage ? "ml-48 mt-20 " : "mt-0"}`}>
             <Component {...pageProps} />
           </main>
 

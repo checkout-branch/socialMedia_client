@@ -45,7 +45,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       <img
         alt="Post Image"
         src={image}
-        className="w-full h-96 object-cover rounded-t-lg"
+        className="w-full h-auto object-contain rounded-t-lg"
       />
 
       {/* Action Icons Section */}

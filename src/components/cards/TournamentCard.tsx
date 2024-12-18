@@ -4,12 +4,12 @@ import Link from "next/link";
 
 type Tournament = {
   _id: string;
-  gameImage: string;
+  image: string;
   userImage: string;
   userName: string;
-  gameName: string;
+  game: string;
   description: string;
-  totalSlots: number;
+  slots: number;
   entryFee: number;
 };
 
@@ -22,10 +22,10 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
   return (
     <Link href={`/tournaments/${tournament._id}`}>
 
-    <div className="max-w-xs bg-[#272932] text-white rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+    <div className="max-w-xs bg-[#272932] text-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 ">
       {/* Game Image */}
       <img
-        src={tournament.gameImage}
+        src={tournament.image}
         alt="Game Image"
         className="w-full h-40 object-cover rounded-t-lg"
       />
@@ -46,14 +46,14 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
         </div>
 
         {/* Game Details */}
-        <h3 className="text-lg font-bold">{tournament.gameName}</h3>
-        <p className="text-sm text-gray-300 mt-2">{tournament.description}</p>
+        <h3 className="text-lg font-bold">{tournament.game}</h3>
+        {/* <p className="text-sm text-gray-300 mt-2">{tournament.description}</p> */}
 
         {/* Slots and Entry Fee */}
         <div className="mt-4 flex justify-between items-center text-sm">
           <div>
             <p className="text-xs text-gray-400">Total Slots</p>
-            <p className="font-semibold">{tournament.totalSlots}</p>
+            <p className="font-semibold">{tournament.slots}</p>
           </div>
           <div>
             <p className="text-xs text-gray-400">Entry Fee</p>

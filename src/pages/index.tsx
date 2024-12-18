@@ -15,6 +15,7 @@ interface Post {
   createdAt: string;
 }
 
+
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]); // Define state as an array of Post objects
 
@@ -34,6 +35,8 @@ export default function Home() {
 
     fetchTournaments();
   }, []);
+
+
 
   return (
     <div className="flex gap-6 p-4">

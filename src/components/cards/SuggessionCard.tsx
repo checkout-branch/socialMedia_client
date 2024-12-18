@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import Button from "../button/Button";
+import { getAllUser } from "@/service/profilel";
 
 interface User {
   id: number;
-  username: string;
+  userName: string;
   profileImageUrl: string;
 }
 
@@ -13,11 +14,13 @@ const UserSuggession: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    // Example API call, replace with your actual API
-    fetch("https://jsonplaceholder.typicode.com/users") // Example API for users
-      .then((response) => response.json())
-      .then((data) => setUsers(data));
+    const fetchUser = async() =>{
+      const res = await getAllUser()
+      setUsers(res.data)
+    }
+    fetchUser()
   }, []);
+  console.log(users,'users');
 
   return (
     <div className="max-w-60  text-white rounded-lg p- gap-2 ">
@@ -26,25 +29,25 @@ const UserSuggession: React.FC = () => {
 
       {/* Users List */}
       <div className="flex flex-col gap-4">
-        {users.splice(0,5).map((user) => (
+        {users?.splice(0,5)?.map((user) => (
          <div
-         key={user.id}
+         key={user?.id}
           className="flex justify-between">
              <div
             className=" rounded-lg flex items-center gap-3"
           >
             <div className="w-8 h-8 rounded-full overflow-hidden">
-              {user.profileImageUrl ? (
+              {user?.profileImageUrl ? (
                 <img
-                  src={user.profileImageUrl}
-                  alt={user.username}
+                  src={user?.profileImageUrl}
+                  alt={user?.userName}
                   className="w-full h-full object-cover"
                 />
               ) : (
                 <FaUserCircle className="w-full h-full text-gray-500" />
               )}
             </div>
-            <span className="text-sm font-semibold">{user.username}</span>
+            <span className="text-sm font-semibold">{user?.userName}</span>
             
           </div >
           <div>
