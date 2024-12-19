@@ -1,5 +1,6 @@
 'use client'
 import { getPostApi } from "@/service/post";
+import { getUserId } from "@/utils/userId";
 import PostCard from "@components/cards/PostCard";
 import UserSuggession from "@components/cards/SuggessionCard";
 import { useEffect, useState } from "react";
@@ -13,13 +14,21 @@ interface Post {
   likes: number[];
   comments: number;
   createdAt: string;
+  _id:string
 }
 
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]); // Define state as an array of Post objects
+  const [currenUserId,setCurrentUserId] = useState<string | null>(null)
 
   useEffect(() => {
+    const fetchCurrentUser = async()=>{
+      const id =await getUserId()
+      setCurrentUserId(id)
+    }
+    fetchCurrentUser()
+
     const fetchTournaments = async () => {
       try {
         const res = await getPostApi();
@@ -27,7 +36,6 @@ export default function Home() {
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });
         setPosts(sortedPosts);
-        console.log(sortedPosts);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
       }
@@ -43,7 +51,7 @@ export default function Home() {
       {/* Posts Section */}
       <div className="grid grid-cols-1 gap-6 w-3/4">
         {posts.map((post, index) => (
-          <PostCard key={index} post={post} />
+          <PostCard key={index} post={post} currentUserId={currenUserId || ""}/>
         ))}
       </div>
 

@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
-// import { FaHeart } from "react-icons/fa";
-import {  FaUserCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import { AiOutlineSave } from "react-icons/ai";
 import { formatDistanceToNow } from "date-fns"; 
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
+import { likeToggleApi } from "@/service/post";
 
 // Define the Post interface
 interface Post {
@@ -17,14 +17,30 @@ interface Post {
   likes: number[];
   comments: number;
   createdAt: string;
+  _id: string;
 }
 
 interface PostCardProps {
   post: Post;
+  currentUserId: string;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
-  const { userName, description, image, likes, comments, createdAt } = post;
+const PostCard: React.FC<PostCardProps> = ({ post, currentUserId }) => {
+  const { userName, description, image, likes, comments, createdAt, _id } = post;
+  const [isLiked, setIsLiked] = useState(likes.includes(Number(currentUserId)));
+  const [likeCount, setLikeCount] = useState(likes.length);
+
+  const handleLike = async () => {
+    try {
+      await likeToggleApi(currentUserId, _id);
+      // Toggle the like state
+      setIsLiked(!isLiked);
+      // Update the like count
+      setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
 
   // Format the timestamp as "time ago" (e.g., "2 hours ago")
   const formattedTimestamp = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
@@ -51,7 +67,17 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       {/* Action Icons Section */}
       <div className="flex justify-between items-center p-4">
         <div className="flex gap-3">
-          <FaRegHeart className="text-2xl cursor-pointer hover:text-red-500 " />
+          {isLiked ? (
+            <FaHeart
+              className="text-2xl cursor-pointer text-red-500"
+              onClick={handleLike}
+            />
+          ) : (
+            <FaRegHeart
+              className="text-2xl cursor-pointer hover:text-red-500"
+              onClick={handleLike}
+            />
+          )}
           <FaRegComment className="text-2xl cursor-pointer hover:text-white" />
           <FiSend className="text-2xl cursor-pointer hover:text-white" />
         </div>
@@ -61,7 +87,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       {/* Like & Comment Details */}
       <div className="px-4 pb-2">
         <div className="flex items-center gap-2 text-sm text-gray-400">
-          <span>{likes?.length} likes</span>
+          <span>{likeCount} likes</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
           <span>View all {comments} comments</span>

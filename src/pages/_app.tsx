@@ -10,6 +10,9 @@ import { AppProps } from "next/app";
 import Navbar from "@components/Navbar";
 import Sidebar from "@components/Sidebar";
 
+import { Provider } from "react-redux";
+import store from "@/store/store";
+
 const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) => {
   const router = useRouter();
   
@@ -19,6 +22,7 @@ const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) =>
   const isAuthPage = authPages.includes(router.pathname);
 
   return (
+    <Provider store={store}>
     <SessionProvider session={session}>
       
     <>
@@ -26,7 +30,7 @@ const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) =>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
-        <title>Your App Title</title>
+        <title>GameSphere</title>
         <meta name="description" content="Your App Description" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -51,6 +55,7 @@ const MyApp = ({ Component, pageProps:{ session, ...pageProps }  }: AppProps) =>
       </div>
     </>
     </SessionProvider>
+    </Provider>
   );
 };
 

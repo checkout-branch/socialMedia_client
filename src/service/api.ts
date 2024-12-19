@@ -13,10 +13,8 @@ api.interceptors.request.use(
     (config) => {
         // Get the token from the cookies
         const token = sessionStorage.getItem("Access_token");  // Read token from cookies
-        console.log(token)
 
         if (token) {
-            console.log('token get')
             // Attach the token to the Authorization header
             config.headers['Authorization'] = `Bearer ${token}`;
         }else {
@@ -33,7 +31,6 @@ api.interceptors.request.use(
 // Response Interceptor for handling errors
 api.interceptors.response.use(
     (response) => {
-        console.log(response,'alksdjfl');
         
         return response;
     },

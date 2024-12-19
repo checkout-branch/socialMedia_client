@@ -1,59 +1,77 @@
-/* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from "react";
-import { FaUserCircle } from "react-icons/fa";
-import Button from "../button/Button";
-import { getAllUser } from "@/service/profilel";
-
-interface User {
-  id: number;
-  userName: string;
-  profileImageUrl: string;
-}
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../Hooks/redux';
+import { fetchUsers, followUser, unfollowUser } from '../../features/followSlice';
+import { FaUserCircle } from 'react-icons/fa';
+import Button from '../button/Button';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import { getUserId } from '@/utils/userId'; // Import the getUserId function
 
 const UserSuggession: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { users, followedUsers, loading } = useAppSelector((state) => state.follow);
+  
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUser = async() =>{
-      const res = await getAllUser()
-      setUsers(res.data)
+    const fetchCurrentUserId = async () => {
+      const id = await getUserId(); // Await the result of getUserId
+      setCurrentUserId(id); // Set the current user ID once it's fetched
+    };
+
+    fetchCurrentUserId();
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  const handleFollow = async (userId: string) => {
+    if (!currentUserId) return; // If currentUserId is not available, do nothing
+
+    // Check if the currentUserId is already following the user
+    if (followedUsers.includes(userId)) {
+      dispatch(unfollowUser({ userId: currentUserId, followId: userId }));
+    } else {
+      dispatch(followUser({ userId: currentUserId, followId: userId }));
     }
-    fetchUser()
-  }, []);
-  console.log(users,'users');
+  };
+
+  // Filter out the current user from the users list
+  const filteredUsers = users.filter(user => user._id !== currentUserId);
+
+  if (loading || currentUserId === null) return <div>Loading...</div>;
 
   return (
-    <div className="max-w-60  text-white rounded-lg p- gap-2 ">
-      {/* Card Header */}
+    <div className="max-w-60 text-white rounded-lg p- gap-2">
       <h2 className="text-xl font-semibold mb-4">Suggested for you</h2>
-
-      {/* Users List */}
       <div className="flex flex-col gap-4">
-        {users?.splice(0,5)?.map((user) => (
-         <div
-         key={user?.id}
-          className="flex justify-between">
-             <div
-            className=" rounded-lg flex items-center gap-3"
-          >
-            <div className="w-8 h-8 rounded-full overflow-hidden">
-              {user?.profileImageUrl ? (
-                <img
-                  src={user?.profileImageUrl}
-                  alt={user?.userName}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <FaUserCircle className="w-full h-full text-gray-500" />
-              )}
+        {filteredUsers.map((user) => (
+          <div key={user._id} className="flex justify-between">
+            <div
+              className="rounded-lg flex items-center gap-3"
+              onClick={() => router.push(`/profile/${user._id}`)}
+            >
+              <div className="w-8 h-8 rounded-full overflow-hidden">
+                {user.profileImageUrl ? (
+                  <Image
+                    src={user.profileImageUrl}
+                    alt={user.userName}
+                    className="w-full h-full object-cover"
+                    width={32}
+                    height={32}
+                  />
+                ) : (
+                  <FaUserCircle className="w-full h-full text-gray-500" />
+                )}
+              </div>
+              <span className="text-sm font-semibold">{user.userName}</span>
             </div>
-            <span className="text-sm font-semibold">{user?.userName}</span>
-            
-          </div >
-          <div>
-          <Button text="follow" size="small"/>
+            <Button
+              text={followedUsers.includes(user._id) ? 'Unfollow' : 'Follow'}
+              size="small"
+              onClick={() => handleFollow(user._id)}
+            />
           </div>
-         </div>
         ))}
       </div>
     </div>

@@ -10,6 +10,7 @@ interface ButtonProps {
   size?: 'small' | 'medium' | 'large'; // Button size
   label?: string; // Label for accessibility
   className?: string; // Additional class names
+  icon?: React.JSX.Element;
 }
 
 const Button: React.FC<ButtonProps> = ({

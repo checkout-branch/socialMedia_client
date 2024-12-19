@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { registerApi } from '@/service/auth';
 import { toast } from 'react-toastify';
 import Button from '@components/button/Button';
+import Link from 'next/link';
 
 // Define the interface
 interface RegistrationFormValues {
@@ -202,12 +203,12 @@ const RegistrationForm: React.FC = () => {
               />
               <p className="text-center text-sm text-gray-400 mt-4">
                 Already have an account?{' '}
-                <a
+                <Link
                   href="/auth/login"
                   className="text-blue-500 hover:underline"
                 >
                   Login
-                </a>
+                </Link>
               </p>
             </Form>
           )}
