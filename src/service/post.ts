@@ -11,6 +11,15 @@ try {
 }
 }
 
+export const getPostByIdApi = async (id:string) =>{
+  try {
+    const res = await api.get(`/user/post/${id}`)
+    return res.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export const createPostApi = async (formData: FormData ,id:string)=>{
   
@@ -45,5 +54,15 @@ export const likeToggleApi = async (userId:string,postId:string)=>{
   } catch (error) {
     console.log(error)
     throw error
+  }
+}
+
+
+export const likeStatusApi = async(userId:string,posId:string)=>{
+  try {
+    const res = await api.get(`/user/posts/${posId}/user/${userId}/likestatus`)
+    return res.data
+  } catch (error) {
+    console.log(error)
   }
 }

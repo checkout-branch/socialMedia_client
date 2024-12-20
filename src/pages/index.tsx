@@ -15,6 +15,7 @@ interface Post {
   comments: number;
   createdAt: string;
   _id:string
+  userId:string
 }
 
 

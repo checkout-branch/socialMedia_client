@@ -5,14 +5,14 @@ import { FaUserCircle } from 'react-icons/fa';
 import Button from '../button/Button';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { getUserId } from '@/utils/userId'; // Import the getUserId function
+import { getUserId } from '@/utils/userId'; 
 
 const UserSuggession: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const { users, followedUsers, loading } = useAppSelector((state) => state.follow);
-  
+
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -28,16 +28,18 @@ const UserSuggession: React.FC = () => {
   const handleFollow = async (userId: string) => {
     if (!currentUserId) return; // If currentUserId is not available, do nothing
 
-    // Check if the currentUserId is already following the user
+    // Follow/unfollow logic
     if (followedUsers.includes(userId)) {
+      // If the user is already followed, unfollow
       dispatch(unfollowUser({ userId: currentUserId, followId: userId }));
     } else {
+      // If the user is not followed, follow
       dispatch(followUser({ userId: currentUserId, followId: userId }));
     }
   };
 
   // Filter out the current user from the users list
-  const filteredUsers = users.filter(user => user._id !== currentUserId);
+  const filteredUsers = users.filter((user) => user._id !== currentUserId);
 
   if (loading || currentUserId === null) return <div>Loading...</div>;
 

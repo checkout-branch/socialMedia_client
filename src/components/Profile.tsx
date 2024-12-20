@@ -1,10 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
-import { getUserById } from "@/service/profilel"; // Update with your service path
 import { FaCoins, FaUser } from "react-icons/fa";
 import Image from "next/image";
 import Button from "./button/Button";
 import FollowListModal from "./modals/followModal";
+import { getUserById } from "@/service/profilel";
+import { toggleFollowApi } from "@/service/follow";
+import { getUserId } from "@/utils/userId";
 
 interface User {
   image: string;
@@ -15,7 +16,7 @@ interface User {
   followers: { userName: string; _id: string }[];
   following: { userName: string; _id: string }[];
   coins: number;
-_id:string
+  _id: string;
 }
 
 interface ProfileProps {
@@ -28,35 +29,38 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalData, setModalData] = useState<{ userName: string; _id: string }[]>([]);
   const [currentFollowingIds, setCurrentFollowingIds] = useState<string[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchCurrentUserId = async () => {
+      try {
+        const userId = await getUserId(); // Await the promise
+        setCurrentUserId(userId); // Set the current user ID
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    };
+
+    fetchCurrentUserId();
+  }, []);
 
   useEffect(() => {
     const fetchUser = async (userId: string) => {
       try {
         const res = await getUserById(userId);
-        console.log(res.followers.map((ele:{following:string})=>ele.following), 'User details'); // Log entire response to inspect structure
-  
         setUserDetails(res);
-        setCurrentFollowingIds(res.followers.map((ele:{following:string})=>ele.following));
+        setCurrentFollowingIds(res.following.map((ele: { _id: string }) => ele._id));
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     if (userId) {
-      fetchUser(userId);
-    } else if (typeof window !== "undefined") {
-      const loggedInUser = JSON.parse(sessionStorage.getItem("user") as string);
-      if (loggedInUser?.id) {
-        fetchUser(loggedInUser.id);
-      }
+      fetchUser(userId); // Fetch user details if userId is passed as prop
+    } else if (currentUserId) {
+      fetchUser(currentUserId); // Fetch current logged-in user's details
     }
-  }, [userId]);
-  
-  // Log currentFollowingIds after it changes
-  useEffect(() => {
-    console.log(currentFollowingIds, 'Updated current following IDs',userId);
-  }, [currentFollowingIds]);
-  
+  }, [userId, currentUserId]);
 
   const openModal = (type: "followers" | "following") => {
     setModalTitle(type === "followers" ? "Followers" : "Following");
@@ -68,14 +72,47 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
     setIsModalOpen(false);
   };
 
-  const handleFollowToggle = async (userId: string) => {
+  const handleFollowToggle = async (targetUserId: string) => {
+    if (!currentUserId || currentUserId === targetUserId) {
+      console.error("User cannot follow themselves");
+      return;
+    }
+
     try {
-      if (currentFollowingIds.includes(userId)) {
-        // Unfollow logic
-        setCurrentFollowingIds((prev) => prev.filter((id) => id !== userId));
+      const payload = { userId: currentUserId, followId: targetUserId };
+
+      // Call the toggleFollow API
+      const res = await toggleFollowApi(payload);
+
+      if (res.status === 200) {
+        // Successfully followed/unfollowed, update the state accordingly
+        if (currentFollowingIds.includes(targetUserId)) {
+          // Unfollow logic
+          setCurrentFollowingIds((prev) => prev.filter((id) => id !== targetUserId));
+
+          // Update follower count
+          setUserDetails((prev) => {
+            if (prev) {
+              const updatedFollowers = prev.followers.filter((follower) => follower._id !== targetUserId);
+              return { ...prev, followers: updatedFollowers };
+            }
+            return prev;
+          });
+        } else {
+          // Follow logic
+          setCurrentFollowingIds((prev) => [...prev, targetUserId]);
+
+          // Update follower count
+          setUserDetails((prev) => {
+            if (prev) {
+              const updatedFollowers = [...prev.followers, { userName: "", _id: targetUserId }];
+              return { ...prev, followers: updatedFollowers };
+            }
+            return prev;
+          });
+        }
       } else {
-        // Follow logic
-        setCurrentFollowingIds((prev) => [...prev, userId]);
+        console.error("Error during follow/unfollow operation");
       }
     } catch (error) {
       console.error("Error toggling follow:", error);
@@ -88,23 +125,23 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
 
   return (
     <div className="min-h-screen text-white mr-24 mt-5">
-     <div className="relative bg-[#6f30d8] h-40 rounded-lg">
-  <div className="absolute left-1/2 transform -translate-x-1/2 top-24">
-    {userDetails.image ? (
-      <Image
-        src={userDetails.image}
-        alt="Profile"
-        className="w-28 h-28 rounded-full border-4 border-[#0f0f17]"
-        width={112} // Explicitly set width (28 x 4 for Tailwind's w-28)
-        height={112} // Explicitly set height
-      />
-    ) : (
-      <div className="w-28 h-28 rounded-full border-4 border-[#0f0f17] bg-gray-300 flex items-center justify-center text-3xl text-gray-700">
-        <FaUser />
+      <div className="relative bg-[#6f30d8] h-40 rounded-lg">
+        <div className="absolute left-1/2 transform -translate-x-1/2 top-24">
+          {userDetails.image ? (
+            <Image
+              src={userDetails.image}
+              alt="Profile"
+              className="w-28 h-28 rounded-full border-4 border-[#0f0f17]"
+              width={112}
+              height={112}
+            />
+          ) : (
+            <div className="w-28 h-28 rounded-full border-4 border-[#0f0f17] bg-gray-300 flex items-center justify-center text-3xl text-gray-700">
+              <FaUser />
+            </div>
+          )}
+        </div>
       </div>
-    )}
-  </div>
-</div>
 
       <div className="mt-20 text-center">
         <h1 className="text-2xl font-bold">{userDetails.name}</h1>
@@ -127,9 +164,12 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
         </div>
 
         <div className="mt-4 flex justify-center gap-4">
-          {userId ? (
+          {currentUserId && userId && userId !== currentUserId ? (  // Ensure userId is defined before using it
             <div className="flex gap-4">
-              <Button text={currentFollowingIds.includes(userId) ? "Following" : "Follow"} />
+              <Button
+                text={currentFollowingIds.includes(userId) ? "Following" : "Follow"}
+                onClick={() => handleFollowToggle(userId)} // Only call handleFollowToggle if userId is defined
+              />
               <Button text="Message" />
             </div>
           ) : (
@@ -143,9 +183,7 @@ const Profile: React.FC<ProfileProps> = ({ userId }) => {
 
       <div className="flex justify-center items-center mt-8 gap-2">
         <FaCoins className="text-yellow-400 text-3xl" />
-        <p className="text-2xl font-semibold">
-          {userDetails.coins ? userDetails.coins.toLocaleString() : "0"} Coins
-        </p>
+        <p className="text-2xl font-semibold">{userDetails.coins ? userDetails.coins.toLocaleString() : "0"} Coins</p>
       </div>
 
       <div className="mt-10 px-6">

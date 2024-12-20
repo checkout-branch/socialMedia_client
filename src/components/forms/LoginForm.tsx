@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { loginApi } from '@/service/auth';
 import { toast } from 'react-toastify';
 import Button from '@components/button/Button';
-import GoogleAuth from '@components/googleAuth';
+// import GoogleAuth from '@components/googleAuth';
 
 interface LoginFormValues {
   email: string;
@@ -107,7 +107,7 @@ const LoginForm: React.FC = () => {
                 {/* <button
                   className="w-full flex items-center justify-center p-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100 transition-all"
                 > */}
-                  <GoogleAuth/>
+                  {/* <GoogleAuth/> */}
                   {/* <img
                     src="/images/googleLogo.png"
                     alt="Google Logo"
