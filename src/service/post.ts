@@ -66,3 +66,34 @@ export const likeStatusApi = async(userId:string,posId:string)=>{
     console.log(error)
   }
 }
+
+
+// export const getCommentsApi = async(id:string)=>{
+//   try {
+//     const res = await api.get(`/user/comments?postId=${id}`)
+//     return res.data
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+export const addCommentApi = async ( authorId: string,postId: string, content: string)=>{
+  try {
+    const res =await api.post('/user/comments',{authorId,postId,content})
+    console.log(res);
+    return res
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      // Return the error message or any other relevant error information
+      return {
+        message: err.response?.data?.message || 'Something went wrong during registration',
+      };
+    } else {
+      // Handle non-Axios errors
+      return {
+        success: false,
+        message: 'An unknown error occurred',
+      };
+    }
+  }
+}

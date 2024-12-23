@@ -23,9 +23,12 @@ const MyApp = ({
 }: AppProps) => {
   const router = useRouter();
 
-  // List of routes where Navbar and Sidebar should be hidden
-  const authPages = ["/auth/registration", "/auth/login", "/auth/otp"];
-  const isAuthPage = authPages.includes(router.pathname);
+  // Define routes for different visibility logic
+  const authRoutes = ["/auth/registration", "/auth/login", "/auth/otp"];
+  const isAuthPage = authRoutes.includes(router.pathname);
+
+  const navbarOnlyHiddenRoutes = ["/about"];
+  const shouldHideNavbarOnly = navbarOnlyHiddenRoutes.includes(router.pathname);
 
   // Create a QueryClient instance
   const [queryClient] = useState(() => new QueryClient());
@@ -50,11 +53,15 @@ const MyApp = ({
 
               {/* Main content area */}
               <div className="flex flex-col flex-1">
-                {/* Navbar: Hidden on authentication pages */}
-                {!isAuthPage && <Navbar />}
+                {/* Navbar: Hidden on both authentication and specific routes */}
+                {!(isAuthPage || shouldHideNavbarOnly) && <Navbar />}
 
                 {/* Page content */}
-                <main className={`flex-1 ${!isAuthPage ? "ml-48 mt-20" : "mt-0"}`}>
+                <main
+                  className={`flex-1 ${
+                    isAuthPage ? "mt-0 ml-0" : shouldHideNavbarOnly ? "mt-0 ml-48" : "mt-20 ml-48"
+                  }`}
+                >
                   <Component {...pageProps} />
                 </main>
 

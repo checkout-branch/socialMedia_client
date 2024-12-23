@@ -12,6 +12,8 @@
 //           <meta name="description" content="Your website description here" />
 //           <meta name="author" content="Your name or company" />
 
+//           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
+
 //           {/* Open Graph (OG) Meta tags for social media sharing */}
 //           <meta property="og:title" content="Your Website Title" />
 //           <meta property="og:description" content="Description for social media" />

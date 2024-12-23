@@ -6,29 +6,30 @@ import UserSuggession from "@components/cards/SuggessionCard";
 import { useEffect, useState } from "react";
 
 // Define the Post interface
+
+
 interface Post {
   profileImage: string;
   userName: string;
   description: string;
   image: string;
   likes: number[];
-  comments: number;
+  comments: { content: string; author: { _id: string; userName: string } }[];  // Add 'author'
   createdAt: string;
-  _id:string
-  userId:string
+  _id: string;
+  userId: string;
 }
-
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]); // Define state as an array of Post objects
-  const [currenUserId,setCurrentUserId] = useState<string | null>(null)
+  const [currenUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCurrentUser = async()=>{
-      const id =await getUserId()
-      setCurrentUserId(id)
-    }
-    fetchCurrentUser()
+    const fetchCurrentUser = async () => {
+      const id = await getUserId();
+      setCurrentUserId(id);
+    };
+    fetchCurrentUser();
 
     const fetchTournaments = async () => {
       try {
@@ -45,14 +46,12 @@ export default function Home() {
     fetchTournaments();
   }, []);
 
-
-
   return (
     <div className="flex gap-6 p-4">
       {/* Posts Section */}
       <div className="grid grid-cols-1 gap-6 w-3/4">
         {posts.map((post, index) => (
-          <PostCard key={index} post={post} currentUserId={currenUserId || ""}/>
+          <PostCard key={index} post={post} currentUserId={currenUserId || ""} />
         ))}
       </div>
 
