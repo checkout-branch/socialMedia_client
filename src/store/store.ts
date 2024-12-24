@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import followReducer from '../features/followSlice';
+// import postReducer from '../features/postSlice'
 
 const store = configureStore({
   reducer: {
     follow: followReducer,
+    // posts: postReducer,
   },
 });
 

@@ -68,11 +68,13 @@ const UserSuggession: React.FC = () => {
               </div>
               <span className="text-sm font-semibold">{user.userName}</span>
             </div>
+            <div>
             <Button
               text={followedUsers.includes(user._id) ? 'Unfollow' : 'Follow'}
               size="small"
               onClick={() => handleFollow(user._id)}
             />
+            </div>
           </div>
         ))}
       </div>

@@ -6,6 +6,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json', 
     },
+    withCredentials:true
 });
 
 // Request Interceptor to attach token from cookies to requests

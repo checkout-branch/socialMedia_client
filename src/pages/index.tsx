@@ -14,7 +14,7 @@ interface Post {
   description: string;
   image: string;
   likes: number[];
-  comments: { content: string; author: { _id: string; userName: string } }[];  // Add 'author'
+  comments: { content: string; author: { _id: string; userName: string; profileImage:string } }[];  // Add 'author'
   createdAt: string;
   _id: string;
   userId: string;
@@ -59,6 +59,7 @@ export default function Home() {
       <div className="w-1/4 mr-20 mt-2">
         <UserSuggession />
       </div>
+      
     </div>
   );
 }

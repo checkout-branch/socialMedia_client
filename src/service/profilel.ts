@@ -19,3 +19,13 @@ export const getUserById = async(id:string) =>{
         throw error
     }
 }
+
+
+export const serchUser = async (query:string)=>{
+try {
+    const res = await api.get(`/user/search?query=${query}`)
+    return res.data
+} catch (error) {
+    console.log(error)
+}
+}

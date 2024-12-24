@@ -15,7 +15,7 @@ import { Provider } from "react-redux";
 import store from "@/store/store";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MyApp = ({
   Component,
@@ -33,9 +33,17 @@ const MyApp = ({
   // Create a QueryClient instance
   const [queryClient] = useState(() => new QueryClient());
 
+  useEffect(() => {
+    // Prevent QueryClientProvider from being rendered without a client instance
+    if (!queryClient) {
+      console.error("QueryClient is not available!");
+    }
+  }, [queryClient]);
+
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
+        {/* QueryClientProvider wrapping the entire app */}
         <QueryClientProvider client={queryClient}>
           <>
             {/* Global metadata */}
@@ -58,9 +66,7 @@ const MyApp = ({
 
                 {/* Page content */}
                 <main
-                  className={`flex-1 ${
-                    isAuthPage ? "mt-0 ml-0" : shouldHideNavbarOnly ? "mt-0 ml-48" : "mt-20 ml-48"
-                  }`}
+                  className={`flex-1 ${isAuthPage ? "mt-0 ml-0" : shouldHideNavbarOnly ? "mt-0 ml-48" : "mt-20 ml-48"}`}
                 >
                   <Component {...pageProps} />
                 </main>
